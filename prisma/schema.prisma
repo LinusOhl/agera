@@ -20,6 +20,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  tasks         Task[]
 
   @@unique([email])
   @@map("user")
@@ -74,7 +75,20 @@ model Verification {
 }
 
 model Task {
-  id String @id @default(uuid())
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      Status   @default(NOT_STARTED)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("task")
+}
+
+enum Status {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
