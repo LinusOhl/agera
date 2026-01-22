@@ -1,5 +1,4 @@
 import {
-  Anchor,
   Button,
   Card,
   Divider,
@@ -13,6 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
+import { CustomLink } from "~/components/CustomLink";
 import { authClient } from "~/lib/auth-client";
 
 export const Route = createFileRoute("/")({
@@ -52,7 +52,9 @@ function RouteComponent() {
             Sign in
           </Text>
 
-          <Anchor c={"dark"}>Need an account?</Anchor>
+          <CustomLink c={"dark"} to="/signup">
+            Need an account?
+          </CustomLink>
         </Group>
 
         <Card p={"lg"} radius={"md"} shadow="md">
