@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   Divider,
@@ -10,8 +11,9 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconBrandGithub } from "@tabler/icons-react";
-import { createFileRoute } from "@tanstack/react-router";
+import { IconBrandGithub, IconExclamationCircle } from "@tabler/icons-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { CustomLink } from "~/components/CustomLink";
 import { authClient } from "~/lib/auth-client";
 
@@ -20,6 +22,9 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -27,6 +32,19 @@ function RouteComponent() {
       password: "",
     },
   });
+
+  const handleEmailSignIn = async (email: string, password: string) => {
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: () => navigate({ to: "/user" }),
+        onError: ({ error }) => setError(error.message),
+      },
+    );
+  };
 
   const handleGithubLogin = async () => {
     await authClient.signIn.social({
@@ -70,7 +88,23 @@ function RouteComponent() {
 
             <Divider label="or" />
 
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            {error && (
+              <Alert
+                title="Error"
+                variant="light"
+                color="red"
+                radius={"md"}
+                icon={<IconExclamationCircle size={18} />}
+              >
+                {error}
+              </Alert>
+            )}
+
+            <form
+              onSubmit={form.onSubmit((values) =>
+                handleEmailSignIn(values.email, values.password),
+              )}
+            >
               <Stack gap={"sm"}>
                 <TextInput
                   key={form.key("email")}
