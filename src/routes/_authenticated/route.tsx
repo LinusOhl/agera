@@ -1,11 +1,12 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { authMiddleware } from "~/middlewares/auth-middleware";
+import { getCurrentUserFn } from "~/utils/users/users.functions";
 
 export const Route = createFileRoute("/_authenticated")({
-  component: RouteComponent,
-  server: {
-    middleware: [authMiddleware],
+  beforeLoad: async () => {
+    const user = await getCurrentUserFn();
+    return { user };
   },
+  component: RouteComponent,
 });
 
 function RouteComponent() {
