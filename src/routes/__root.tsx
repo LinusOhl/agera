@@ -10,18 +10,12 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { ReactNode } from "react";
 import { theme } from "~/config/theme";
-import { getCurrentUserFn } from "~/utils/users/users.functions";
 
 import "@mantine/core/styles.css";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
-  beforeLoad: async () => {
-    const user = await getCurrentUserFn();
-
-    return { user };
-  },
   head: () => ({
     meta: [
       {
