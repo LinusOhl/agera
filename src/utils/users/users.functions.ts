@@ -1,10 +1,17 @@
+import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { authMiddleware } from "~/middlewares/auth-middleware";
+import { getRequestHeaders } from "@tanstack/react-start/server";
+import { auth } from "~/lib/auth";
 
-export const getCurrentUserFn = createServerFn({ method: "GET" })
-  .middleware([authMiddleware])
-  .handler(async ({ context }) => {
-    const user = context.user;
+export const getCurrentUserFn = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const headers = getRequestHeaders();
+    const user = await auth.api.getSession({ headers });
 
-    return user;
-  });
+    if (!user) {
+      throw redirect({ to: "/" });
+    }
+
+    return user.user;
+  },
+);
