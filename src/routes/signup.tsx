@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   Group,
@@ -9,10 +10,13 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { createFileRoute } from "@tanstack/react-router";
+import { IconExclamationCircle } from "@tabler/icons-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
+import { useState } from "react";
 import { z } from "zod";
 import { CustomLink } from "~/components/CustomLink";
+import { authClient } from "~/lib/auth-client";
 
 const SignUpSchema = z
   .object({
@@ -36,6 +40,9 @@ export const Route = createFileRoute("/signup")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -46,6 +53,24 @@ function RouteComponent() {
     },
     validate: zod4Resolver(SignUpSchema),
   });
+
+  const handleSignUp = async (
+    name: string,
+    email: string,
+    password: string,
+  ) => {
+    await authClient.signUp.email(
+      {
+        name,
+        email,
+        password,
+      },
+      {
+        onSuccess: () => navigate({ to: "/" }),
+        onError: ({ error }) => setError(error.message),
+      },
+    );
+  };
 
   return (
     <Stack h={"100vh"} p={"xs"} gap={"xl"} justify="center">
@@ -71,7 +96,23 @@ function RouteComponent() {
 
         <Card p={"lg"} radius={"md"} shadow="md">
           <Stack gap={"md"}>
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            {error && (
+              <Alert
+                title="Error"
+                variant="light"
+                color="red"
+                radius={"md"}
+                icon={<IconExclamationCircle size={18} />}
+              >
+                {error}
+              </Alert>
+            )}
+
+            <form
+              onSubmit={form.onSubmit((values) =>
+                handleSignUp(values.name, values.email, values.password),
+              )}
+            >
               <Stack gap={"sm"}>
                 <TextInput
                   key={form.key("name")}
