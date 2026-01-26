@@ -1,19 +1,23 @@
 import {
+  Badge,
   Button,
   Drawer,
-  List,
-  ListItem,
+  Flex,
+  Paper,
   Select,
   Stack,
   Text,
   TextInput,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronRight } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
+import { CustomLink } from "~/components/CustomLink";
 import { TASK_STATUS_LABELS, TaskStatuses } from "~/constants";
 import {
   tasksQueryOptions,
@@ -32,6 +36,7 @@ function RouteComponent() {
   const { data: tasks } = useSuspenseQuery(tasksQueryOptions());
   const createTaskMutation = useCreateTaskMutation();
   const [opened, { open, close }] = useDisclosure(false);
+  const theme = useMantineTheme();
 
   const taskStatusOptions = Object.values(TaskStatuses).map((status) => ({
     value: status,
@@ -115,11 +120,30 @@ function RouteComponent() {
           No existing tasks.
         </Text>
       ) : (
-        <List>
+        <Stack>
           {tasks.map((task) => (
-            <ListItem key={task.id}>{task.title}</ListItem>
+            <CustomLink
+              key={task.id}
+              to="/tasks/$taskId"
+              params={{ taskId: task.id }}
+              underline="never"
+            >
+              <Paper p={"xs"} shadow="xs">
+                <Flex justify={"space-between"} align={"center"} mb={"md"}>
+                  <Text c={"dark"}>{task.title}</Text>
+                  <IconChevronRight color={theme.colors.dark[6]} />
+                </Flex>
+
+                <Flex justify={"space-between"} align={"center"}>
+                  <Badge>{task.status}</Badge>
+                  <Text fz={"sm"} c={"dimmed"}>
+                    {task.createdAt.toLocaleString()}
+                  </Text>
+                </Flex>
+              </Paper>
+            </CustomLink>
           ))}
-        </List>
+        </Stack>
       )}
     </Stack>
   );
