@@ -15,5 +15,7 @@ const CreatedLinkComponent = createLink(MantineLinkComponent);
 export const CustomLink: LinkComponent<typeof MantineLinkComponent> = (
   props,
 ) => {
-  return <CreatedLinkComponent preload="intent" {...props} />;
+  return (
+    <CreatedLinkComponent preload="render" preloadDelay={2500} {...props} />
+  );
 };
