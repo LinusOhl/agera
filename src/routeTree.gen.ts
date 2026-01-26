@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedUserRouteImport } from './routes/_authenticated/user'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthenticatedTasksTaskIdRouteImport } from './routes/_authenticated/tasks/$taskId'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -45,11 +46,18 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedTasksTaskIdRoute =
+  AuthenticatedTasksTaskIdRouteImport.update({
+    id: '/tasks/$taskId',
+    path: '/tasks/$taskId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/signup': typeof SignupRoute
   '/user': typeof AuthenticatedUserRoute
+  '/tasks/$taskId': typeof AuthenticatedTasksTaskIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
 }
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/signup': typeof SignupRoute
   '/user': typeof AuthenticatedUserRoute
+  '/tasks/$taskId': typeof AuthenticatedTasksTaskIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
 }
@@ -66,20 +75,28 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/signup': typeof SignupRoute
   '/_authenticated/user': typeof AuthenticatedUserRoute
+  '/_authenticated/tasks/$taskId': typeof AuthenticatedTasksTaskIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signup' | '/user' | '/api/auth/$' | '/tasks/'
+  fullPaths:
+    | '/'
+    | '/signup'
+    | '/user'
+    | '/tasks/$taskId'
+    | '/api/auth/$'
+    | '/tasks/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signup' | '/user' | '/api/auth/$' | '/tasks'
+  to: '/' | '/signup' | '/user' | '/tasks/$taskId' | '/api/auth/$' | '/tasks'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/signup'
     | '/_authenticated/user'
+    | '/_authenticated/tasks/$taskId'
     | '/api/auth/$'
     | '/_authenticated/tasks/'
   fileRoutesById: FileRoutesById
@@ -135,16 +152,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/tasks/$taskId': {
+      id: '/_authenticated/tasks/$taskId'
+      path: '/tasks/$taskId'
+      fullPath: '/tasks/$taskId'
+      preLoaderRoute: typeof AuthenticatedTasksTaskIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedUserRoute: typeof AuthenticatedUserRoute
+  AuthenticatedTasksTaskIdRoute: typeof AuthenticatedTasksTaskIdRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedUserRoute: AuthenticatedUserRoute,
+  AuthenticatedTasksTaskIdRoute: AuthenticatedTasksTaskIdRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
 }
 
