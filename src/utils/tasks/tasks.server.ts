@@ -2,11 +2,16 @@ import { prisma } from "~/lib/prisma";
 import type { TaskCreateType } from "./schema";
 
 export const createTask = async (data: TaskCreateType, userId: string) => {
-  if (!data) {
-    throw new Error("Missing data fields.");
-  }
+  const task = await prisma.task.create({
+    data: {
+      title: data.title,
+      description: data.description,
+      status: data.status,
+      userId,
+    },
+  });
 
-  console.log("data:", data, userId);
+  return task;
 };
 
 export const fetchTasks = async (userId: string) => {
@@ -17,4 +22,15 @@ export const fetchTasks = async (userId: string) => {
   });
 
   return tasks;
+};
+
+export const fetchTask = async (id: string, userId: string) => {
+  const task = await prisma.task.findUnique({
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  return task;
 };
