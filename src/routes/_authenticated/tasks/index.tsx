@@ -23,7 +23,7 @@ import {
   tasksQueryOptions,
   useCreateTaskMutation,
 } from "~/utils/tasks/queryOptions";
-import { TaskCreateSchema, type TaskCreateType } from "~/utils/tasks/schema";
+import { TaskSchema, type TaskType } from "~/utils/tasks/schema";
 
 export const Route = createFileRoute("/_authenticated/tasks/")({
   loader: async ({ context }) => {
@@ -43,17 +43,17 @@ function RouteComponent() {
     label: TASK_STATUS_LABELS[status],
   }));
 
-  const form = useForm<TaskCreateType>({
+  const form = useForm<TaskType>({
     mode: "uncontrolled",
     initialValues: {
       title: "",
       description: "",
       status: "NOT_STARTED",
     },
-    validate: zod4Resolver(TaskCreateSchema),
+    validate: zod4Resolver(TaskSchema),
   });
 
-  const handleTaskCreation = async (data: TaskCreateType) => {
+  const handleTaskCreation = async (data: TaskType) => {
     createTaskMutation.mutate({
       data: {
         title: data.title,
