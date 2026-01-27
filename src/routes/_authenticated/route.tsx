@@ -1,4 +1,9 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
+import { CustomLoader } from "~/components/CustomLoader";
 import { getCurrentUserFn } from "~/utils/users/users.functions";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -10,5 +15,11 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function RouteComponent() {
+  const { isLoading } = useRouterState();
+
+  if (isLoading) {
+    return <CustomLoader />;
+  }
+
   return <Outlet />;
 }
