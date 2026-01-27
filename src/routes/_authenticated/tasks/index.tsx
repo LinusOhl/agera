@@ -33,10 +33,12 @@ export const Route = createFileRoute("/_authenticated/tasks/")({
 });
 
 function RouteComponent() {
+  const theme = useMantineTheme();
+
   const { data: tasks } = useSuspenseQuery(tasksQueryOptions());
   const createTaskMutation = useCreateTaskMutation();
+
   const [opened, { open, close }] = useDisclosure(false);
-  const theme = useMantineTheme();
 
   const form = useForm<TaskType>({
     mode: "uncontrolled",

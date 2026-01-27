@@ -1,5 +1,6 @@
-import { Button, Center, Loader, Stack, Text, Title } from "@mantine/core";
+import { Button, Stack, Text, Title } from "@mantine/core";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { CustomLoader } from "~/components/CustomLoader";
 import { authClient } from "~/lib/auth-client";
 
 export const Route = createFileRoute("/_authenticated/user")({
@@ -11,11 +12,7 @@ function RouteComponent() {
   const { data: session, isPending } = authClient.useSession();
 
   if (isPending) {
-    return (
-      <Center mih={"100vh"}>
-        <Loader color="dark" />
-      </Center>
-    );
+    return <CustomLoader />;
   }
 
   const handleLogout = async () => {

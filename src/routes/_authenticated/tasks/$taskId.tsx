@@ -27,7 +27,6 @@ export const Route = createFileRoute("/_authenticated/tasks/$taskId")({
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(taskQueryOptions(params.taskId));
   },
-  pendingComponent: () => <div>Loading...</div>,
   component: RouteComponent,
 });
 
