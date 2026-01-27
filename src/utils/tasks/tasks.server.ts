@@ -34,3 +34,14 @@ export const fetchTask = async (id: string, userId: string) => {
 
   return task;
 };
+
+export const deleteTask = async (id: string, userId: string) => {
+  const task = await prisma.task.delete({
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  return task;
+};

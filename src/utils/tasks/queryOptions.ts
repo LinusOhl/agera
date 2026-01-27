@@ -1,6 +1,11 @@
 import { queryOptions, useMutation } from "@tanstack/react-query";
 import { queryClient } from "~/router";
-import { createTaskFn, fetchTaskFn, fetchTasksFn } from "./tasks.functions";
+import {
+  createTaskFn,
+  deleteTaskFn,
+  fetchTaskFn,
+  fetchTasksFn,
+} from "./tasks.functions";
 
 export const useCreateTaskMutation = () => {
   return useMutation({
@@ -20,3 +25,10 @@ export const taskQueryOptions = (id: string) =>
     queryKey: ["tasks", id],
     queryFn: () => fetchTaskFn({ data: { id } }),
   });
+
+export const useDeleteTaskMutation = () => {
+  return useMutation({
+    mutationFn: deleteTaskFn,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+};
