@@ -5,6 +5,7 @@ import {
   deleteTaskFn,
   fetchTaskFn,
   fetchTasksFn,
+  updateTaskFn,
 } from "./tasks.functions";
 
 export const useCreateTaskMutation = () => {
@@ -30,5 +31,13 @@ export const useDeleteTaskMutation = () => {
   return useMutation({
     mutationFn: deleteTaskFn,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+};
+
+export const useUpdateTaskMutation = () => {
+  return useMutation({
+    mutationFn: updateTaskFn,
+    onSuccess: ({ id }) =>
+      queryClient.invalidateQueries({ queryKey: ["tasks", id] }),
   });
 };
