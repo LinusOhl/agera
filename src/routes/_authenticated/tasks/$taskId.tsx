@@ -15,7 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { TASK_STATUS_LABELS, TaskStatuses } from "~/constants";
+import { taskStatusOptions } from "~/helpers";
 import {
   taskQueryOptions,
   useDeleteTaskMutation,
@@ -59,11 +59,6 @@ function RouteComponent() {
       },
     );
   };
-
-  const taskStatusOptions = Object.values(TaskStatuses).map((status) => ({
-    value: status,
-    label: TASK_STATUS_LABELS[status],
-  }));
 
   const form = useForm<TaskType>({
     mode: "uncontrolled",
