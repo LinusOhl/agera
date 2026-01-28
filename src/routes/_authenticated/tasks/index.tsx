@@ -137,7 +137,17 @@ function RouteComponent() {
               </Flex>
 
               <Flex justify={"space-between"} align={"center"}>
-                <Badge>{task.status}</Badge>
+                <Badge
+                  color={
+                    task.status === "COMPLETED"
+                      ? "green"
+                      : task.status === "IN_PROGRESS"
+                        ? "orange"
+                        : "gray"
+                  }
+                >
+                  {task.status}
+                </Badge>
                 <Text fz={"sm"} c={"dimmed"}>
                   {task.createdAt.toLocaleString()}
                 </Text>

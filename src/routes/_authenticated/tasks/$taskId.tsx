@@ -93,7 +93,17 @@ function RouteComponent() {
             {task?.title}
           </Title>
 
-          <Badge>{task?.status}</Badge>
+          <Badge
+            color={
+              task?.status === "COMPLETED"
+                ? "green"
+                : task?.status === "IN_PROGRESS"
+                  ? "orange"
+                  : "gray"
+            }
+          >
+            {task?.status}
+          </Badge>
         </Group>
 
         <Text c={"dimmed"} fz={"md"}>
