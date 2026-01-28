@@ -15,9 +15,8 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { CustomLink } from "~/components/CustomLink";
 import { taskStatusOptions } from "~/helpers";
 import {
   tasksQueryOptions,
@@ -33,6 +32,7 @@ export const Route = createFileRoute("/_authenticated/tasks/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const theme = useMantineTheme();
 
   const { data: tasks } = useSuspenseQuery(tasksQueryOptions());
@@ -119,26 +119,30 @@ function RouteComponent() {
       ) : (
         <Stack>
           {tasks.map((task) => (
-            <CustomLink
+            <Paper
               key={task.id}
-              to="/tasks/$taskId"
-              params={{ taskId: task.id }}
-              underline="never"
+              p={"xs"}
+              shadow="xs"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                navigate({
+                  to: "/tasks/$taskId",
+                  params: { taskId: task.id },
+                })
+              }
             >
-              <Paper p={"xs"} shadow="xs">
-                <Flex justify={"space-between"} align={"center"} mb={"md"}>
-                  <Text c={"dark"}>{task.title}</Text>
-                  <IconChevronRight color={theme.colors.dark[6]} />
-                </Flex>
+              <Flex justify={"space-between"} align={"center"} mb={"md"}>
+                <Text c={"dark"}>{task.title}</Text>
+                <IconChevronRight color={theme.colors.dark[6]} />
+              </Flex>
 
-                <Flex justify={"space-between"} align={"center"}>
-                  <Badge>{task.status}</Badge>
-                  <Text fz={"sm"} c={"dimmed"}>
-                    {task.createdAt.toLocaleString()}
-                  </Text>
-                </Flex>
-              </Paper>
-            </CustomLink>
+              <Flex justify={"space-between"} align={"center"}>
+                <Badge>{task.status}</Badge>
+                <Text fz={"sm"} c={"dimmed"}>
+                  {task.createdAt.toLocaleString()}
+                </Text>
+              </Flex>
+            </Paper>
           ))}
         </Stack>
       )}
