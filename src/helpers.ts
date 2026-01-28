@@ -23,6 +23,17 @@ export const sortTasks = (
       });
       return sortedTasks;
     }
+    case "createdAt": {
+      const sortedTasks = [...tasks].sort((a, b) => {
+        const aValue = Date.parse(a.createdAt.toLocaleString());
+        const bValue = Date.parse(b.createdAt.toLocaleString());
+
+        if (direction === "asc") return aValue - bValue;
+        if (direction === "desc") return bValue - aValue;
+        return 0;
+      });
+      return sortedTasks;
+    }
     default:
       break;
   }
