@@ -16,7 +16,7 @@ export const sortKeyOptions = Object.values(SortKeys).map((key) => ({
   label: SORT_KEY_LABELS[key],
 }));
 
-type SortDirection = "asc" | "desc";
+export type SortDirection = "asc" | "desc";
 
 export const sortTasks = (
   tasks: Task[],

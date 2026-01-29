@@ -19,7 +19,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useMemo, useState } from "react";
-import { sortKeyOptions, sortTasks, taskStatusOptions } from "~/helpers";
+import {
+  type SortDirection,
+  sortKeyOptions,
+  sortTasks,
+  taskStatusOptions,
+} from "~/helpers";
 import {
   tasksQueryOptions,
   useCreateTaskMutation,
@@ -72,7 +77,7 @@ function RouteComponent() {
     },
   });
 
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [sortFormValues, setSortFormValues] = useState<
     typeof sortForm.values | null
   >(null);
