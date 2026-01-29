@@ -47,3 +47,16 @@ export const sortTasks = (
       return tasks;
   }
 };
+
+export const getProperStatusName = (name: string) => {
+  switch (name) {
+    case TaskStatuses.NOT_STARTED:
+      return "Not started";
+    case TaskStatuses.IN_PROGRESS:
+      return "In progress";
+    case TaskStatuses.COMPLETED:
+      return "Completed";
+    default:
+      return "";
+  }
+};

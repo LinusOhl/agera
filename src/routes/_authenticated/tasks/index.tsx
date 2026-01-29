@@ -20,6 +20,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useMemo, useState } from "react";
 import {
+  getProperStatusName,
   type SortDirection,
   sortKeyOptions,
   sortTasks,
@@ -197,7 +198,7 @@ function RouteComponent() {
                         : "gray"
                   }
                 >
-                  {task.status}
+                  {getProperStatusName(task.status)}
                 </Badge>
                 <Text fz={"sm"} c={"dimmed"}>
                   {task.createdAt.toLocaleString()}
