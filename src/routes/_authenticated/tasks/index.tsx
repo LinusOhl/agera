@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Badge,
   Button,
   Drawer,
@@ -13,11 +14,12 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconArrowsUpDown, IconChevronRight } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { taskStatusOptions } from "~/helpers";
+import { useMemo, useState } from "react";
+import { sortKeyOptions, sortTasks, taskStatusOptions } from "~/helpers";
 import {
   tasksQueryOptions,
   useCreateTaskMutation,
@@ -62,6 +64,32 @@ function RouteComponent() {
     close();
     form.reset();
   };
+
+  const sortForm = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      sortKey: null,
+    },
+  });
+
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [sortFormValues, setSortFormValues] = useState<
+    typeof sortForm.values | null
+  >(null);
+
+  const handleSortDirection = () => {
+    if (sortDirection === "asc") {
+      setSortDirection("desc");
+    } else {
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedTasks = useMemo(() => {
+    if (!sortFormValues) return tasks;
+
+    return sortTasks(tasks, sortFormValues.sortKey, sortDirection);
+  }, [tasks, sortFormValues, sortDirection]);
 
   return (
     <Stack p={"xs"} gap={"xl"}>
@@ -112,13 +140,35 @@ function RouteComponent() {
         Create task
       </Button>
 
+      <form onSubmit={sortForm.onSubmit(setSortFormValues)}>
+        <Select
+          key={sortForm.key("sortKey")}
+          label="Sorting"
+          data={sortKeyOptions}
+          leftSection={
+            <ActionIcon
+              variant="transparent"
+              color="dark"
+              onClick={handleSortDirection}
+            >
+              <IconArrowsUpDown />
+            </ActionIcon>
+          }
+          {...sortForm.getInputProps("sortKey")}
+        />
+
+        <Button type="submit" color="dark">
+          Apply filters
+        </Button>
+      </form>
+
       {tasks.length === 0 ? (
         <Text c={"dimmed"} fs={"italic"}>
           No existing tasks.
         </Text>
       ) : (
         <Stack>
-          {tasks.map((task) => (
+          {sortedTasks.map((task) => (
             <Paper
               key={task.id}
               p={"xs"}
