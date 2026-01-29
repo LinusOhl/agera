@@ -82,14 +82,6 @@ function RouteComponent() {
     typeof sortForm.values | null
   >(null);
 
-  const handleSortDirection = () => {
-    if (sortDirection === "asc") {
-      setSortDirection("desc");
-    } else {
-      setSortDirection("asc");
-    }
-  };
-
   const sortedTasks = useMemo(() => {
     if (!sortFormValues) return tasks;
 
@@ -154,7 +146,11 @@ function RouteComponent() {
             <ActionIcon
               variant="transparent"
               color="dark"
-              onClick={handleSortDirection}
+              onClick={() =>
+                sortDirection === "asc"
+                  ? setSortDirection("desc")
+                  : setSortDirection("asc")
+              }
             >
               <IconArrowsUpDown />
             </ActionIcon>
