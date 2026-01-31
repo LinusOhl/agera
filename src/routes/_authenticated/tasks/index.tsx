@@ -20,6 +20,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useMemo, useState } from "react";
 import {
+  filterTasks,
   getProperStatusName,
   type SortDirection,
   sortKeyOptions,
@@ -75,6 +76,7 @@ function RouteComponent() {
     mode: "uncontrolled",
     initialValues: {
       sortKey: null,
+      filterKey: null,
     },
   });
 
@@ -88,6 +90,12 @@ function RouteComponent() {
 
     return sortTasks(tasks, sortFormValues.sortKey, sortDirection);
   }, [tasks, sortFormValues, sortDirection]);
+
+  const filteredTasks = useMemo(() => {
+    if (!sortFormValues?.filterKey) return sortedTasks;
+
+    return filterTasks(sortedTasks, sortFormValues.filterKey);
+  }, [sortedTasks, sortFormValues]);
 
   return (
     <Stack p={"xs"} gap={"xl"}>
@@ -139,29 +147,43 @@ function RouteComponent() {
       </Button>
 
       <form onSubmit={sortForm.onSubmit(setSortFormValues)}>
-        <Select
-          key={sortForm.key("sortKey")}
-          label="Sorting"
-          data={sortKeyOptions}
-          leftSection={
-            <ActionIcon
-              variant="transparent"
-              color="dark"
-              onClick={() =>
-                sortDirection === "asc"
-                  ? setSortDirection("desc")
-                  : setSortDirection("asc")
-              }
-            >
-              <IconArrowsUpDown />
-            </ActionIcon>
-          }
-          {...sortForm.getInputProps("sortKey")}
-        />
+        <Stack gap={"sm"}>
+          <Select
+            key={sortForm.key("sortKey")}
+            label="Sorting"
+            data={sortKeyOptions}
+            leftSection={
+              <ActionIcon
+                variant="transparent"
+                color="dark"
+                onClick={() =>
+                  sortDirection === "asc"
+                    ? setSortDirection("desc")
+                    : setSortDirection("asc")
+                }
+              >
+                <IconArrowsUpDown />
+              </ActionIcon>
+            }
+            {...sortForm.getInputProps("sortKey")}
+          />
 
-        <Button type="submit" color="dark">
-          Apply filters
-        </Button>
+          <Select
+            key={sortForm.key("filterKey")}
+            label="Filter"
+            data={[
+              {
+                group: "Status",
+                items: taskStatusOptions,
+              },
+            ]}
+            {...sortForm.getInputProps("filterKey")}
+          />
+
+          <Button type="submit" color="dark">
+            Apply filters
+          </Button>
+        </Stack>
       </form>
 
       {tasks.length === 0 ? (
@@ -170,7 +192,7 @@ function RouteComponent() {
         </Text>
       ) : (
         <Stack>
-          {sortedTasks.map((task) => (
+          {filteredTasks.map((task) => (
             <Paper
               key={task.id}
               p={"xs"}

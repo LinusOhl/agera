@@ -60,3 +60,16 @@ export const getProperStatusName = (name: string) => {
       return "";
   }
 };
+
+export const filterTasks = (tasks: Task[], status: TaskStatuses) => {
+  switch (status) {
+    case TaskStatuses.NOT_STARTED:
+      return tasks.filter((task) => task.status === "NOT_STARTED");
+    case TaskStatuses.IN_PROGRESS:
+      return tasks.filter((task) => task.status === "IN_PROGRESS");
+    case TaskStatuses.COMPLETED:
+      return tasks.filter((task) => task.status === "COMPLETED");
+    default:
+      return tasks;
+  }
+};
