@@ -180,9 +180,23 @@ function RouteComponent() {
             {...sortForm.getInputProps("filterKey")}
           />
 
-          <Button type="submit" color="dark">
-            Apply filters
-          </Button>
+          <Button.Group>
+            <Button
+              color="dark"
+              variant="light"
+              onClick={() => {
+                sortForm.reset();
+                setSortFormValues(null);
+              }}
+              fullWidth
+            >
+              Reset filters
+            </Button>
+
+            <Button type="submit" color="dark" fullWidth>
+              Apply filters
+            </Button>
+          </Button.Group>
         </Stack>
       </form>
 
