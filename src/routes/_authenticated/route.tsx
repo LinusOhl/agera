@@ -35,6 +35,7 @@ function RouteComponent() {
       <Tabs
         value={pathname}
         variant="outline"
+        bg={"white"}
         style={{ position: "fixed", bottom: 0 }}
         onChange={(value) => navigate({ to: `${value}` })}
       >
