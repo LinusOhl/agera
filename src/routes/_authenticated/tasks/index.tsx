@@ -144,7 +144,6 @@ function RouteComponent() {
               label="Task priority"
               data={taskPriorityOptions}
               comboboxProps={{ position: "bottom-start" }}
-              withAsterisk
               {...form.getInputProps("priority")}
             />
 
@@ -238,7 +237,7 @@ function RouteComponent() {
               </Flex>
 
               <Flex justify={"space-between"} align={"center"}>
-                <Group>
+                <Group gap={2}>
                   {task.priority && <Badge>{task.priority}</Badge>}
 
                   <Badge
