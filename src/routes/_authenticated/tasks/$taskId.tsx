@@ -15,7 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { taskStatusOptions } from "~/helpers";
+import { taskPriorityOptions, taskStatusOptions } from "~/helpers";
 import {
   taskQueryOptions,
   useDeleteTaskMutation,
@@ -65,6 +65,7 @@ function RouteComponent() {
       title: task?.title || "",
       description: task?.description || "",
       status: task?.status || "NOT_STARTED",
+      priority: task?.priority || null,
     },
     validate: zod4Resolver(TaskSchema),
   });
@@ -77,6 +78,7 @@ function RouteComponent() {
           title: data.title,
           description: data.description,
           status: data.status,
+          priority: data.priority,
         },
       },
       {
@@ -93,17 +95,21 @@ function RouteComponent() {
             {task?.title}
           </Title>
 
-          <Badge
-            color={
-              task?.status === "COMPLETED"
-                ? "green"
-                : task?.status === "IN_PROGRESS"
-                  ? "orange"
-                  : "gray"
-            }
-          >
-            {task?.status}
-          </Badge>
+          <Group gap={"xs"}>
+            {task?.priority && <Badge>{task.priority}</Badge>}
+
+            <Badge
+              color={
+                task?.status === "COMPLETED"
+                  ? "green"
+                  : task?.status === "IN_PROGRESS"
+                    ? "orange"
+                    : "gray"
+              }
+            >
+              {task?.status}
+            </Badge>
+          </Group>
         </Group>
 
         <Text c={"dimmed"} fz={"md"}>
@@ -151,6 +157,14 @@ function RouteComponent() {
               comboboxProps={{ position: "bottom-start" }}
               withAsterisk
               {...form.getInputProps("status")}
+            />
+
+            <Select
+              key={form.key("priority")}
+              label="Task priority"
+              data={taskPriorityOptions}
+              comboboxProps={{ position: "bottom-start" }}
+              {...form.getInputProps("priority")}
             />
 
             <Button type="submit" color="dark">
