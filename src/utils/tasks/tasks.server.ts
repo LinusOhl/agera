@@ -7,6 +7,7 @@ export const createTask = async (data: TaskType, userId: string) => {
       title: data.title,
       description: data.description,
       status: data.status,
+      priority: data.priority,
       userId,
     },
   });
