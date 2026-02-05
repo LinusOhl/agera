@@ -188,6 +188,10 @@ function RouteComponent() {
                 group: "Status",
                 items: taskStatusOptions,
               },
+              {
+                group: "Priority",
+                items: taskPriorityOptions,
+              },
             ]}
             {...sortForm.getInputProps("filterKey")}
           />

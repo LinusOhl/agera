@@ -70,15 +70,35 @@ export const getProperStatusName = (name: string) => {
   }
 };
 
-export const filterTasks = (tasks: Task[], status: TaskStatuses) => {
-  switch (status) {
-    case TaskStatuses.NOT_STARTED:
-      return tasks.filter((task) => task.status === "NOT_STARTED");
-    case TaskStatuses.IN_PROGRESS:
-      return tasks.filter((task) => task.status === "IN_PROGRESS");
-    case TaskStatuses.COMPLETED:
-      return tasks.filter((task) => task.status === "COMPLETED");
-    default:
-      return tasks;
+export const filterTasks = (
+  tasks: Task[],
+  key: TaskStatuses | TaskPriorities,
+) => {
+  if (key in TaskStatuses) {
+    switch (key) {
+      case TaskStatuses.NOT_STARTED:
+        return tasks.filter((task) => task.status === TaskStatuses.NOT_STARTED);
+      case TaskStatuses.IN_PROGRESS:
+        return tasks.filter((task) => task.status === TaskStatuses.IN_PROGRESS);
+      case TaskStatuses.COMPLETED:
+        return tasks.filter((task) => task.status === TaskStatuses.COMPLETED);
+      default:
+        return tasks;
+    }
   }
+
+  if (key in TaskPriorities) {
+    switch (key) {
+      case TaskPriorities.LOW:
+        return tasks.filter((task) => task.priority === TaskPriorities.LOW);
+      case TaskPriorities.MEDIUM:
+        return tasks.filter((task) => task.priority === TaskPriorities.MEDIUM);
+      case TaskPriorities.HIGH:
+        return tasks.filter((task) => task.priority === TaskPriorities.HIGH);
+      default:
+        return tasks;
+    }
+  }
+
+  return tasks;
 };
