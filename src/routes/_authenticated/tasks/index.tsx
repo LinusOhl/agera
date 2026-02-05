@@ -4,6 +4,7 @@ import {
   Button,
   Drawer,
   Flex,
+  Group,
   Paper,
   Select,
   Stack,
@@ -25,6 +26,7 @@ import {
   type SortDirection,
   sortKeyOptions,
   sortTasks,
+  taskPriorityOptions,
   taskStatusOptions,
 } from "~/helpers";
 import {
@@ -55,6 +57,7 @@ function RouteComponent() {
       title: "",
       description: "",
       status: "NOT_STARTED",
+      priority: null,
     },
     validate: zod4Resolver(TaskSchema),
   });
@@ -65,6 +68,7 @@ function RouteComponent() {
         title: data.title,
         description: data.description || null,
         status: data.status,
+        priority: data.priority || null,
       },
     });
 
@@ -133,6 +137,15 @@ function RouteComponent() {
               comboboxProps={{ position: "bottom-start" }}
               withAsterisk
               {...form.getInputProps("status")}
+            />
+
+            <Select
+              key={form.key("priority")}
+              label="Task priority"
+              data={taskPriorityOptions}
+              comboboxProps={{ position: "bottom-start" }}
+              withAsterisk
+              {...form.getInputProps("priority")}
             />
 
             <Button type="submit" color="dark">
@@ -225,17 +238,21 @@ function RouteComponent() {
               </Flex>
 
               <Flex justify={"space-between"} align={"center"}>
-                <Badge
-                  color={
-                    task.status === "COMPLETED"
-                      ? "green"
-                      : task.status === "IN_PROGRESS"
-                        ? "orange"
-                        : "gray"
-                  }
-                >
-                  {getProperStatusName(task.status)}
-                </Badge>
+                <Group>
+                  {task.priority && <Badge>{task.priority}</Badge>}
+
+                  <Badge
+                    color={
+                      task.status === "COMPLETED"
+                        ? "green"
+                        : task.status === "IN_PROGRESS"
+                          ? "orange"
+                          : "gray"
+                    }
+                  >
+                    {getProperStatusName(task.status)}
+                  </Badge>
+                </Group>
                 <Text fz={"sm"} c={"dimmed"}>
                   {task.createdAt.toLocaleString()}
                 </Text>

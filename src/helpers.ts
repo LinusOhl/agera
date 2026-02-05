@@ -2,7 +2,9 @@ import type { Task } from "generated/prisma/client";
 import {
   SORT_KEY_LABELS,
   SortKeys,
+  TASK_PRIORITY_LABELS,
   TASK_STATUS_LABELS,
+  TaskPriorities,
   TaskStatuses,
 } from "./constants";
 
@@ -10,6 +12,13 @@ export const taskStatusOptions = Object.values(TaskStatuses).map((status) => ({
   value: status,
   label: TASK_STATUS_LABELS[status],
 }));
+
+export const taskPriorityOptions = Object.values(TaskPriorities).map(
+  (priority) => ({
+    value: priority,
+    label: TASK_PRIORITY_LABELS[priority],
+  }),
+);
 
 export const sortKeyOptions = Object.values(SortKeys).map((key) => ({
   value: key,

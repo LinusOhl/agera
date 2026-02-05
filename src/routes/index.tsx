@@ -47,10 +47,15 @@ function RouteComponent() {
   };
 
   const handleGithubLogin = async () => {
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/user",
-    });
+    await authClient.signIn.social(
+      {
+        provider: "github",
+        callbackURL: "/user",
+      },
+      {
+        onError: ({ error }) => console.error(error),
+      },
+    );
   };
 
   return (

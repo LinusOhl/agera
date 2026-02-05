@@ -12,6 +12,18 @@ export const TASK_STATUS_LABELS: Record<TaskStatuses, string> = {
   [TaskStatuses.COMPLETED]: "Completed",
 };
 
+export enum TaskPriorities {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+}
+
+export const TASK_PRIORITY_LABELS: Record<TaskPriorities, string> = {
+  [TaskPriorities.LOW]: "Low",
+  [TaskPriorities.MEDIUM]: "Medium",
+  [TaskPriorities.HIGH]: "High",
+};
+
 export enum SortKeys {
   TITLE = "TITLE",
   CREATED_AT = "CREATED_AT",
