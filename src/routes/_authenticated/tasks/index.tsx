@@ -10,12 +10,17 @@ import {
   Stack,
   Text,
   TextInput,
+  ThemeIcon,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowsUpDown, IconChevronRight } from "@tabler/icons-react";
+import {
+  IconArrowsUpDown,
+  IconChevronDown,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
@@ -241,8 +246,22 @@ function RouteComponent() {
               </Flex>
 
               <Flex justify={"space-between"} align={"center"}>
-                <Group gap={2}>
-                  {task.priority && <Badge>{task.priority}</Badge>}
+                <Group gap={"xs"}>
+                  {task.priority && (
+                    <ThemeIcon
+                      radius={"xl"}
+                      size={"sm"}
+                      color={
+                        task?.priority === "HIGH"
+                          ? "red"
+                          : task?.priority === "MEDIUM"
+                            ? "orange"
+                            : "yellow"
+                      }
+                    >
+                      <IconChevronDown />
+                    </ThemeIcon>
+                  )}
 
                   <Badge
                     color={
