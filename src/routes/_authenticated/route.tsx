@@ -30,7 +30,9 @@ function RouteComponent() {
 
   return (
     <>
-      <Outlet />
+      <div style={{ marginBottom: "36px" }}>
+        <Outlet />
+      </div>
 
       <Tabs
         value={pathname}
