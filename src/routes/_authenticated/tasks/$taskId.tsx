@@ -73,20 +73,17 @@ function RouteComponent() {
   });
 
   const handleTaskUpdate = async (data: TaskType) => {
-    updateTaskMutation.mutate(
-      {
-        data: {
-          id: taskId,
-          title: data.title,
-          description: data.description,
-          status: data.status,
-          priority: data.priority,
-        },
+    updateTaskMutation.mutate({
+      data: {
+        id: taskId,
+        title: data.title,
+        description: data.description,
+        status: data.status,
+        priority: data.priority,
       },
-      {
-        onSuccess: () => drawerClose(),
-      },
-    );
+    });
+
+    drawerClose();
   };
 
   return (
