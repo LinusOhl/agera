@@ -17,6 +17,7 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zod4Resolver } from "mantine-form-zod-resolver";
+import { CustomLink } from "~/components/CustomLink";
 import { taskPriorityOptions, taskStatusOptions } from "~/helpers";
 import {
   taskQueryOptions,
@@ -88,41 +89,43 @@ function RouteComponent() {
 
   return (
     <Stack p={"xs"} gap={"xl"}>
+      <CustomLink to="/tasks" c={"dark"}>
+        Go back
+      </CustomLink>
+
       <Stack gap={"xs"}>
-        <Group justify="space-between">
-          <Title order={1} c={"dark"}>
-            {task?.title}
-          </Title>
+        <Title order={1} c={"dark"}>
+          {task?.title}
+        </Title>
 
-          <Group gap={"xs"}>
-            {task?.priority && (
-              <ThemeIcon
-                radius={"xl"}
-                size={"sm"}
-                color={
-                  task?.priority === "HIGH"
-                    ? "red"
-                    : task?.priority === "MEDIUM"
-                      ? "orange"
-                      : "yellow"
-                }
-              >
-                <IconChevronDown />
-              </ThemeIcon>
-            )}
-
-            <Badge
+        <Group gap={"xs"}>
+          {task?.priority && (
+            <ThemeIcon
+              radius={"xl"}
+              size={"sm"}
               color={
-                task?.status === "COMPLETED"
-                  ? "green"
-                  : task?.status === "IN_PROGRESS"
+                task?.priority === "HIGH"
+                  ? "red"
+                  : task?.priority === "MEDIUM"
                     ? "orange"
-                    : "gray"
+                    : "yellow"
               }
             >
-              {task?.status}
-            </Badge>
-          </Group>
+              <IconChevronDown />
+            </ThemeIcon>
+          )}
+
+          <Badge
+            color={
+              task?.status === "COMPLETED"
+                ? "green"
+                : task?.status === "IN_PROGRESS"
+                  ? "orange"
+                  : "gray"
+            }
+          >
+            {task?.status}
+          </Badge>
         </Group>
 
         <Text c={"dimmed"} fz={"md"}>
@@ -187,10 +190,6 @@ function RouteComponent() {
         </form>
       </Drawer>
 
-      <Button variant="outline" color="dark" onClick={drawerOpen}>
-        Edit task
-      </Button>
-
       <Modal opened={modalOpened} onClose={modalClose} title="Confirm deletion">
         <Text mb={"md"}>Are you sure you want to delete the task?</Text>
 
@@ -205,9 +204,15 @@ function RouteComponent() {
         </Group>
       </Modal>
 
-      <Button color="red" onClick={modalOpen}>
-        Delete task
-      </Button>
+      <Stack>
+        <Button variant="outline" color="dark" onClick={drawerOpen}>
+          Edit task
+        </Button>
+
+        <Button color="red" onClick={modalOpen}>
+          Delete task
+        </Button>
+      </Stack>
     </Stack>
   );
 }
