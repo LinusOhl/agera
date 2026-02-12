@@ -22,7 +22,8 @@ model User {
   accounts      Account[]
   tasks         Task[]
   teamId        String?
-  team          Team?     @relation(fields: [teamId], references: [id])
+  team          Team?     @relation(name: "TeamMembers", fields: [teamId], references: [id])
+  ownedTeam     Team?     @relation(name: "TeamOwner")
 
   @@unique([email])
   @@map("user")
@@ -105,8 +106,9 @@ enum Priority {
 model Team {
   id        String   @id @default(uuid())
   name      String
-  ownerId   String
-  users     User[]
+  ownerId   String   @unique
+  owner     User     @relation(name: "TeamOwner", fields: [ownerId], references: [id])
+  users     User[]   @relation(name: "TeamMembers")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
