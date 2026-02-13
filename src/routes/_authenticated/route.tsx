@@ -43,6 +43,7 @@ function RouteComponent() {
       >
         <Tabs.List>
           <Tabs.Tab value="/tasks">Tasks</Tabs.Tab>
+          <Tabs.Tab value="/team">Team</Tabs.Tab>
           <Tabs.Tab value="/user">User</Tabs.Tab>
         </Tabs.List>
       </Tabs>
