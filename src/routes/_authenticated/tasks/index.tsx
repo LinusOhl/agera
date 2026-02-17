@@ -23,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import type { Prisma } from "generated/prisma/client";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useMemo, useState } from "react";
 import {
@@ -38,7 +39,7 @@ import {
   tasksQueryOptions,
   useCreateTaskMutation,
 } from "~/utils/tasks/queryOptions";
-import { TaskSchema, type TaskType } from "~/utils/tasks/schema";
+import { TaskSchema } from "~/utils/tasks/schema";
 
 export const Route = createFileRoute("/_authenticated/tasks/")({
   loader: async ({ context }) => {
@@ -56,7 +57,7 @@ function RouteComponent() {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-  const form = useForm<TaskType>({
+  const form = useForm<Omit<Prisma.TaskCreateInput, "user">>({
     mode: "uncontrolled",
     initialValues: {
       title: "",
@@ -67,7 +68,9 @@ function RouteComponent() {
     validate: zod4Resolver(TaskSchema),
   });
 
-  const handleTaskCreation = async (data: TaskType) => {
+  const handleTaskCreation = async (
+    data: Omit<Prisma.TaskCreateInput, "user">,
+  ) => {
     createTaskMutation.mutate({
       data: {
         title: data.title,
