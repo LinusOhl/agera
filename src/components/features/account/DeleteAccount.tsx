@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { authClient } from "~/lib/auth-client";
 
-export const DeleteAccountModal = () => {
+export const DeleteAccount = () => {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState<string>("");
