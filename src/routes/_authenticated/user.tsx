@@ -1,7 +1,7 @@
 import { Button, Stack, Text, Title } from "@mantine/core";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { CustomLoader } from "~/components/CustomLoader";
-import { DeleteAccountModal } from "~/components/DeleteAccountModal";
+import { DeleteAccount } from "~/components/features/account/DeleteAccount";
 import { authClient } from "~/lib/auth-client";
 
 export const Route = createFileRoute("/_authenticated/user")({
@@ -36,7 +36,7 @@ function RouteComponent() {
         Log out
       </Button>
 
-      <DeleteAccountModal />
+      <DeleteAccount />
     </Stack>
   );
 }
