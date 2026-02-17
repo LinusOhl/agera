@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import type { Prisma } from "generated/prisma/client";
 import { z } from "zod";
 import { authMiddleware } from "~/middlewares/auth-middleware";
 import { TaskSchema } from "./schema";
@@ -12,7 +13,7 @@ import {
 
 export const createTaskFn = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(TaskSchema)
+  .inputValidator((data: Omit<Prisma.TaskCreateInput, "user">) => data)
   .handler(async ({ data, context }) => {
     const userId = context.user.id;
     return await createTask(data, userId);

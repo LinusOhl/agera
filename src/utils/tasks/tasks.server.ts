@@ -1,7 +1,11 @@
+import type { Prisma } from "generated/prisma/client";
 import { prisma } from "~/lib/prisma";
 import type { TaskType } from "./schema";
 
-export const createTask = async (data: TaskType, userId: string) => {
+export const createTask = async (
+  data: Omit<Prisma.TaskCreateInput, "user">,
+  userId: string,
+) => {
   const task = await prisma.task.create({
     data: {
       title: data.title,
